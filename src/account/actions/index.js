@@ -21,22 +21,7 @@ const signInAction = createAsyncAction(
       return userStorage.setUser(user);
     })
     .then(async (data) => {
-      let nextPath;
-
-      const stores = data.staff.authorizations
-        .map(authorization => authorization.organization)
-        .filter(org => org.type === 'STORE');
-      if (stores.length >= 1) {
-        if (stores.length === 1) {
-          await userStorage.setCurrentStore(stores[0]);
-          nextPath = routes.DASHBOARD;
-        } else {
-          nextPath = routes.STORE_SELECTOR;
-        }
-      } else {
-        nextPath = routes.DASHBOARD;
-      }
-      dispatch(push(nextPath));
+      dispatch(push('/hello'));
       return data;
     }, e => Promise.reject(new SubmissionError({ _error: e.message }))));
 
