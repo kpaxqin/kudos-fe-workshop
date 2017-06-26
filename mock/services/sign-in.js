@@ -7,26 +7,9 @@ const signIn = {
   method: 'POST',
   template: {
     token: faker.random.uuid(),
-    staff: function(params, query, body) {
-      return {
-        name: faker.name.findName(),
-        authorizations: [
-          {
-            organization: {
-              id: 'test-organ-id',
-              storeId: 'test-store-id',
-              storeName: 'enabled store',
-              type: 'STORE',
-            },
-            role: {
-              name: 'mock_admin',
-              permissions: [{
-                permissionType: isManager(body.accountId) ? 'MANAGER' : 'ADMIN',
-              }]
-            }
-          }
-        ],
-      }
+    name: faker.name.findName(),
+    role: function(params, query, body) {
+      return isManager(body.accountId) ? 'MANAGER' : 'ADMIN';
     },
   },
   render: function(req, res, next) {

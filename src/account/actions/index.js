@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { createAction, createAsyncAction } from 'redux-action-tools';
 import { SubmissionError } from 'redux-form';
 
@@ -11,15 +10,7 @@ import actionTypes from '../constants/actionTypes';
 const signInAction = createAsyncAction(
   actionTypes.SIGN_IN,
   (signInUser, dispatch) => auth.signIn(signInUser)
-    .then((data) => {
-      const user = {
-        ...data,
-        permissions: _.flatten(data.staff.authorizations
-          .map(authorization => authorization.role.permissions))
-          .map(perm => perm.permissionType),
-      };
-      return userStorage.setUser(user);
-    })
+    .then(user => userStorage.setUser(user))
     .then(async (data) => {
       dispatch(push('/hello'));
       return data;

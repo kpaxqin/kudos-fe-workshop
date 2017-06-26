@@ -22,10 +22,10 @@ export function getAuthedNavigation(permissions = [], navigation) {
   }, []);
 }
 
-export function getAuthedNavConfig(permission = []) {
+export function getAuthedNavConfig() {
   return {
     ...rootNavigation,
-    children: getAuthedNavigation(permission, rootNavigation.children),
+    // children: getAuthedNavigation(permission, rootNavigation.children),
   };
 }
 

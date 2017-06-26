@@ -26,7 +26,7 @@ class DashboardComponent extends Component {
     const { currentUser, children, location, loading } = this.props;
     return (
       <div className="dashboard wrapper">
-        <Header onSignOut={this.handleSignOut} namePlaceholder={_.get(currentUser, 'staff.name')} />
+        <Header onSignOut={this.handleSignOut} namePlaceholder={_.get(currentUser, 'name')} />
         <Sidebar path={location.pathname} user={currentUser} />
         <div className="content-wrapper page-content-wrapper loading-mask-container">
           {children}

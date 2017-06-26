@@ -62,7 +62,7 @@ MenuIterator.propTypes = {
 };
 
 const Menu = (props) => {
-  const authedMenuConfig = getAuthedNavConfig(props.user.permissions);
+  const authedMenuConfig = getAuthedNavConfig();
   return (
     <ul className="sidebar-menu">
       <li className="header">MAIN NAVIGATION</li>
@@ -76,9 +76,6 @@ const Menu = (props) => {
 
 Menu.propTypes = {
   path: PropTypes.string.isRequired,
-  user: PropTypes.shape({
-    permissions: PropTypes.arrayOf(PropTypes.string),
-  }).isRequired,
 };
 
 export default Menu;
