@@ -1,4 +1,4 @@
-const MenuConfig = {
+const navConfig = {
   id: 'root',
   name: 'Home',
   link: '/',
@@ -12,4 +12,4 @@ const MenuConfig = {
   ],
 };
 
-export default MenuConfig;
+export default navConfig;

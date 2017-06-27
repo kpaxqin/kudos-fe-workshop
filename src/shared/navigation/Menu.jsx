@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import cx from 'classnames';
 import { Link } from '../router';
-import { getAuthedNavConfig } from '../auth/navigation';
+import navigationConfig from '../constants/navigation';
 import { isMenuActive } from './utils';
 
 const MenuItem = props => (
@@ -62,12 +62,12 @@ MenuIterator.propTypes = {
 };
 
 const Menu = (props) => {
-  const authedMenuConfig = getAuthedNavConfig();
+  const navConfig = navigationConfig;
   return (
     <ul className="sidebar-menu">
       <li className="header">MAIN NAVIGATION</li>
       {
-        authedMenuConfig.children
+        navConfig.children
           .map(item => <MenuIterator menu={item} key={item.id} path={props.path} />)
       }
     </ul>

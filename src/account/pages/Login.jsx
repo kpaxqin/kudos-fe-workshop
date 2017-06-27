@@ -4,7 +4,6 @@ import _ from 'lodash';
 
 import actions from '../actions';
 import LoginForm from '../components/LoginForm';
-// import { connectCheckLogout } from '../../shared/auth';
 import { withRedux } from '../../shared/redux';
 import bodyClass from '../../shared/utils/bodyClass';
 
@@ -36,7 +35,6 @@ const decorator = _.flowRight(
   bodyClass({
     className: 'login-page',
   }),
-  // connectCheckLogout,
   connect(state => state, {
     signInAction: actions.signInAction,
   }),
