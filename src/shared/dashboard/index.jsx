@@ -8,6 +8,7 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Content from './components/Content';
 import LoadingMask from './components/LoadingMask';
+import { connectCheckLogin } from '../auth';
 
 import './index.less';
 
@@ -61,6 +62,7 @@ DashboardComponent.defaultProps = {
 
 
 const decorator = _.flowRight(
+  connectCheckLogin,
   connect(state => ({
     currentUser: state.currentUser,
     loading: state.loading,
