@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Dashboard from '../../shared/dashboard';
 import { withRedux } from '../../shared/redux';
 import userStorage from '../../shared/storage/user';
+import history from '../../history';
 
 const connectAuthCheck = checkFn => (Content) => {
   class AuthCheck extends Component {
@@ -39,7 +40,12 @@ const connectAuthCheck = checkFn => (Content) => {
 const World = ({ currentUser }) => <Dashboard><div>World of {currentUser.name}!</div></Dashboard>;
 
 const enhance = flowRight([
-  connectAuthCheck(() => userStorage.getUser()),
+  connectAuthCheck(
+    () => userStorage.getUser().then(user => user, (e) => {
+      history.push('/sign-in');
+      throw e;
+    }),
+  ),
   withRedux(),
   connect(state => state),
 ]);
