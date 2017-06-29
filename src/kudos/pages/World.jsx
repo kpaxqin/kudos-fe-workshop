@@ -1,9 +1,10 @@
 import React from 'react';
 import { flowRight } from 'lodash';
 import { connect } from 'react-redux';
+import Dashboard from '../../shared/dashboard';
 import { withRedux } from '../../shared/redux';
 
-const World = ({ currentUser }) => <div>World of {currentUser.name}!</div>;
+const World = ({ currentUser }) => <Dashboard><div>World of {currentUser.name}!</div></Dashboard>;
 
 const enhance = flowRight([
   withRedux(),
