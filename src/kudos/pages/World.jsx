@@ -1,51 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { flowRight } from 'lodash';
 import { connect } from 'react-redux';
 import Dashboard from '../../shared/dashboard';
 import { withRedux } from '../../shared/redux';
-import userStorage from '../../shared/storage/user';
-import history from '../../history';
-
-const connectAuthCheck = checkFn => (Content) => {
-  class AuthCheck extends Component {
-    constructor() {
-      super();
-      this.state = {
-        authed: false,
-      };
-    }
-    componentWillMount() {
-      this.doCheck(this.props);
-    }
-    doCheck(props) {
-      Promise.resolve(checkFn(props))
-        .then(() => {
-          this.setState({ authed: true });
-        }, (e) => {
-          console.warn('Page you requested is not allowed: ', e);
-        });
-    }
-    render() {
-      const { authed } = this.state;
-      return (
-        authed ? <Content {...this.props} /> : null
-      );
-    }
-  }
-
-  return AuthCheck;
-};
-
+import { connectCheckLogin } from '../../shared/auth';
 
 const World = ({ currentUser }) => <Dashboard><div>World of {currentUser.name}!</div></Dashboard>;
 
 const enhance = flowRight([
-  connectAuthCheck(
-    () => userStorage.getUser().then(user => user, (e) => {
-      history.push('/sign-in');
-      throw e;
-    }),
-  ),
+  connectCheckLogin,
   withRedux(),
   connect(state => state),
 ]);
