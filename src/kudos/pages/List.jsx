@@ -3,6 +3,7 @@ import { flowRight } from 'lodash';
 import { withRedux } from '../../shared/redux';
 import { layoutWrapper } from '../../shared/dashboard';
 import ListTable from '../components/ListTable';
+import SearchBar from '../components/SearchBar';
 import listApi from '../../shared/api/list';
 
 const columns = [
@@ -17,6 +18,7 @@ const columns = [
   },
 ];
 
+
 class List extends Component {
   constructor() {
     super();
@@ -28,28 +30,39 @@ class List extends Component {
         pageSize: 10,
         items: [],
       },
+      searchParams: {
+        name: '',
+      },
     };
   }
   componentDidMount() {
-    this.getList(1);
+    this.getList(this.state.list.pageIndex);
   }
-  getList(pageIndex, query) {
+  getList(pageIndex, searchParams) {
     listApi.getList({
-      ...query,
+      ...searchParams,
       pageIndex,
     }).then(list => this.setState({ list }));
   }
   handleSelectPage = (nextPageIndex) => {
-    this.getList(nextPageIndex);
+    this.getList(nextPageIndex, this.state.searchParams);
+  }
+  handleSearch = (search) => {
+    this.setState({
+      searchParams: search, 
+    }, ()=> this.getList(1, search));
   }
   render() {
-    const { list } = this.state;
+    const { list, searchParams } = this.state;
     return (
-      <ListTable
-        columns={columns}
-        list={list}
-        onSelectPage={this.handleSelectPage}
-      />
+      <div className="content">
+        <SearchBar searchParams={searchParams} onSearch={this.handleSearch} />
+        <ListTable
+          columns={columns}
+          list={list}
+          onSelectPage={this.handleSelectPage}
+        />
+      </div>
     );
   }
 }
