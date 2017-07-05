@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { flowRight } from 'lodash';
+import { parse } from 'query-string';
 import { withRedux } from '../../shared/redux';
 import { layoutWrapper } from '../../shared/dashboard';
 import ListTable from '../components/ListTable';
@@ -36,9 +37,10 @@ class List extends Component {
     };
   }
   componentDidMount() {
-    this.getList(this.state.list.pageIndex);
+    const { pageIndex, ...searchParams } = parse(this.props.location.search);
+    this.getList(pageIndex, searchParams);
   }
-  getList(pageIndex, searchParams) {
+  getList(pageIndex = 1, searchParams) {
     listApi.getList({
       ...searchParams,
       pageIndex,
