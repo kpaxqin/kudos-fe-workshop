@@ -33,9 +33,6 @@ class List extends Component {
         pageSize: 10,
         items: [],
       },
-      searchParams: {
-        name: '',
-      },
     };
   }
   componentDidMount() {
@@ -74,7 +71,8 @@ class List extends Component {
     }, true);
   }
   render() {
-    const { list, searchParams } = this.state;
+    const { list } = this.state;
+    const { pageIndex, ...searchParams } = parse(this.props.location.search);
     return (
       <div className="content">
         <SearchBar searchParams={searchParams} onSearch={this.handleSearch} />
