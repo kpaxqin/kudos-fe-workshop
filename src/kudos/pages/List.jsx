@@ -10,7 +10,31 @@ import makePath from '../../shared/utils/makePath';
 import history from '../../history';
 
 
-const connectListPage = ({ getListData }) => (Page) => {
+const DEFAULT_CONFIG = {
+  mapLocationToRequest(location) {
+    const { pageIndex = 1, ...searchParams } = parse(location.search);
+
+    return {
+      pageIndex,
+      ...searchParams,
+    };
+  },
+  mapLocationToSearch(location) {
+    const { pageIndex, ...searchParams } = parse(location.search);
+
+    return searchParams;
+  },
+};
+
+const connectListPage = config => (Page) => {
+  const {
+    getListData,
+    mapLocationToRequest,
+    mapLocationToSearch,
+  } = {
+    ...DEFAULT_CONFIG,
+    ...config,
+  };
   class ListPage extends Component {
     constructor() {
       super();
@@ -31,12 +55,9 @@ const connectListPage = ({ getListData }) => (Page) => {
       this.getList(nextProps.location);
     }
     getList(location) {
-      const { pageIndex = 1, ...searchParams } = parse(location.search);
+      const finalRequest = mapLocationToRequest(location);
 
-      getListData({
-        ...searchParams,
-        pageIndex,
-      }).then(list => this.setState({ list }));
+      getListData(finalRequest).then(list => this.setState({ list }));
     }
     changeUrlQuery(nextQuery, isOverride) {
       const { location: { pathname, search } } = this.props;
@@ -61,7 +82,7 @@ const connectListPage = ({ getListData }) => (Page) => {
     }
     render() {
       const { list } = this.state;
-      const { pageIndex, ...searchParams } = parse(this.props.location.search);
+      const searchParams = mapLocationToSearch(this.props.location);
       return (
         <Page
           list={list}
@@ -106,6 +127,22 @@ const decorator = flowRight([
   layoutWrapper,
   connectListPage({
     getListData: listApi.getList,
+    mapLocationToRequest(location) {
+      const defaultRequest = DEFAULT_CONFIG.mapLocationToRequest(location);
+
+      return {
+        role: 'ADMIN',
+        ...defaultRequest,
+      };
+    },
+    mapLocationToSearch(location) {
+      const defaultSearch = DEFAULT_CONFIG.mapLocationToSearch(location);
+
+      return {
+        role: 'ADMIN',
+        ...defaultSearch,
+      };
+    },
   }),
   // connect(state => state),
 ]);
