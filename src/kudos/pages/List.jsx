@@ -39,10 +39,14 @@ class List extends Component {
     };
   }
   componentDidMount() {
-    const { pageIndex, ...searchParams } = parse(this.props.location.search);
-    this.getList(pageIndex, searchParams);
+    this.getList(this.props.location);
   }
-  getList(pageIndex = 1, searchParams) {
+  componentWillReceiveProps(nextProps) {
+    this.getList(nextProps.location);
+  }
+  getList(location) {
+    const { pageIndex = 1, ...searchParams } = parse(location.search);
+
     listApi.getList({
       ...searchParams,
       pageIndex,
