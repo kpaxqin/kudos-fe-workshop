@@ -6,6 +6,8 @@ import { layoutWrapper } from '../../shared/dashboard';
 import ListTable from '../components/ListTable';
 import SearchBar from '../components/SearchBar';
 import listApi from '../../shared/api/list';
+import makePath from '../../shared/utils/makePath';
+import history from '../../history';
 
 const columns = [
   {
@@ -46,13 +48,26 @@ class List extends Component {
       pageIndex,
     }).then(list => this.setState({ list }));
   }
+  changeUrlQuery(nextQuery, isOverride) {
+    const { location: { pathname, search } } = this.props;
+    const currentQuery = parse(search);
+    const nextPath = makePath(
+      pathname,
+      undefined,
+      isOverride ? nextQuery : { ...currentQuery, ...nextQuery },
+    );
+    history.push(nextPath);
+  }
   handleSelectPage = (nextPageIndex) => {
-    this.getList(nextPageIndex, this.state.searchParams);
+    this.changeUrlQuery({
+      pageIndex: nextPageIndex,
+    });
   }
   handleSearch = (search) => {
-    this.setState({
-      searchParams: search, 
-    }, ()=> this.getList(1, search));
+    this.changeUrlQuery({
+      ...search,
+      pageIndex: 1,
+    }, true);
   }
   render() {
     const { list, searchParams } = this.state;
