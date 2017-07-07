@@ -1,4 +1,4 @@
-import { ADD_TODO, DELETE_TODO, EDIT_TODO, COMPLETE_TODO, COMPLETE_ALL, CLEAR_COMPLETED } from '../constants/ActionTypes'
+import { ADD_TODO_SUCCESS, DELETE_TODO, EDIT_TODO, COMPLETE_TODO, COMPLETE_ALL, CLEAR_COMPLETED } from '../constants/ActionTypes'
 
 const initialState = [
   {
@@ -10,7 +10,7 @@ const initialState = [
 
 export default function todos(state = initialState, action) {
   switch (action.type) {
-    case ADD_TODO:
+    case ADD_TODO_SUCCESS:
       return [
         {
           id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,

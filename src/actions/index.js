@@ -1,16 +1,17 @@
 import * as types from '../constants/ActionTypes'
 import api from '../api';
 
-const defaultErrorHandler = (e)=> window.alert(e)
-
-const createAsyncAction = (type, asyncFn, errorHanler = defaultErrorHandler) => syncPayload => dispatch => {
+const createAsyncAction = (type, asyncFn, ) => syncPayload => dispatch => {
+  dispatch({
+    type, 
+    payload: syncPayload
+  })
   asyncFn(syncPayload).then(
     (data)=> {
-      dispatch({type, payload: data})
+      dispatch({type: `${type}_SUCCESS`, payload: data})
     },
     (e)=> {
-      errorHanler(e)
-      throw e
+      dispatch({type: `${type}_FAILED`, payload: e, error: true})
     }
   )
 }

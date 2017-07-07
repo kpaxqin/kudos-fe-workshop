@@ -1,4 +1,5 @@
 export const ADD_TODO = 'ADD_TODO'
+export const ADD_TODO_SUCCESS = 'ADD_TODO_SUCCESS'
 export const ADD_TODO_FAILED = 'ADD_TODO_FAILED'
 export const DELETE_TODO = 'DELETE_TODO'
 export const EDIT_TODO = 'EDIT_TODO'
