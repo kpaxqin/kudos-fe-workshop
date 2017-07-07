@@ -14,4 +14,22 @@ const api = {
   }
 }
 
-export default api;
+function handleError(fn) {
+  return function() {
+    return fn(...arguments).catch((e)=> {
+      window.alert(e);
+      throw e;
+    })
+  }
+}
+
+function wrapApi(apis) {
+  let result = {};
+
+  for (var i in apis) {
+    result[i] = handleError(apis[i])
+  }
+  return result;
+}
+
+export default wrapApi(api);
