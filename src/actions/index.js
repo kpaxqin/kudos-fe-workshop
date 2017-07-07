@@ -1,15 +1,24 @@
 import * as types from '../constants/ActionTypes'
 import api from '../api';
 
-const addTodoSuccess = text => ({ type: types.ADD_TODO, text })
-const addTodoFailed = e => ({ type: types.ADD_TODO_FAILED, payload: e, error: true })
+const defaultErrorHandler = (e)=> window.alert(e)
 
-export const addTodo = text => dispatch => Promise.all([api.addTodo(text), api.addTodo(text)])
-  .then(([data])=> {
-    dispatch(addTodoSuccess(text));
-  }, (e)=> {
-    dispatch(addTodoFailed(e));
-  });
+const createAsyncAction = (type, asyncFn, errorHanler = defaultErrorHandler) => syncPayload => dispatch => {
+  asyncFn(syncPayload).then(
+    (data)=> {
+      dispatch({type, payload: data})
+    },
+    (e)=> {
+      errorHanler(e)
+      throw e
+    }
+  )
+}
+
+export const addTodo = createAsyncAction(
+  types.ADD_TODO, 
+  (text)=> Promise.all([api.addTodo(text), api.addTodo(text)]),
+);
 
 export const deleteTodo = id => ({ type: types.DELETE_TODO, id })
 export const editTodo = (id, text) => ({ type: types.EDIT_TODO, id, text })
