@@ -14,22 +14,22 @@ const api = {
   }
 }
 
-function handleError(fn) {
-  return function() {
-    return fn(...arguments).catch((e)=> {
-      window.alert(e);
-      throw e;
-    })
-  }
-}
+// function handleError(fn) {
+//   return function() {
+//     return fn(...arguments).catch((e)=> {
+//       window.alert(e);
+//       throw e;
+//     })
+//   }
+// }
 
-function wrapApi(apis) {
-  let result = {};
+// function wrapApi(apis) {
+//   let result = {};
 
-  for (var i in apis) {
-    result[i] = handleError(apis[i])
-  }
-  return result;
-}
+//   for (var i in apis) {
+//     result[i] = handleError(apis[i])
+//   }
+//   return result;
+// }
 
-export default wrapApi(api);
+export default api;
