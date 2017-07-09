@@ -34,7 +34,10 @@ const createAsyncAction = (type, asyncFn) => syncPayload => dispatch => {
 
 export const addTodo = createAsyncAction(
   types.ADD_TODO, 
-  (text)=> Promise.all([api.addTodo(text), api.addTodo(text)]),
+  (text)=> Promise.all([api.addTodo(text), api.addTodo(text)])
+    .then(data=> data, e => {
+      throw new Error('Custom msg!')
+    }),
 );
 
 export const deleteTodo = id => ({ type: types.DELETE_TODO, id })
