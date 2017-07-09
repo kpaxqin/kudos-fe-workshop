@@ -6,7 +6,7 @@ const rootReducer = combineReducers({
   todos,
   error(state = null, action) {
     switch(action.type) {
-      case types.ADD_TODO_FAILED:
+      case types.ASYNC_FAILED:
         // shouldn't call alert in reducer, just for demostrate
         window.alert(action.payload); 
         return action.payload;

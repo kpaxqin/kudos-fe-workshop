@@ -1,3 +1,4 @@
+export const ASYNC_FAILED = 'ASYNC_FAILED'
 export const ADD_TODO = 'ADD_TODO'
 export const ADD_TODO_SUCCESS = 'ADD_TODO_SUCCESS'
 export const ADD_TODO_FAILED = 'ADD_TODO_FAILED'
