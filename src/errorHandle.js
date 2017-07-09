@@ -3,7 +3,9 @@ export const commonErrorHandler = e => {
 }
 
 export const errorMiddleware = store => next => action => {
-  if (action.meta && action.meta.asyncPhase && action.meta.asyncPhase === 'FAILED') {
+  const isFailedAsync = action.meta && action.meta.asyncPhase && action.meta.asyncPhase === 'FAILED';
+  const omitError  = action.meta && action.meta.omitError;
+  if (isFailedAsync && !omitError) {
     commonErrorHandler(action.payload);
   }
 
