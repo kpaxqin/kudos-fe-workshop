@@ -1,17 +1,33 @@
 import * as types from '../constants/ActionTypes'
 import api from '../api';
 
-const createAsyncAction = (type, asyncFn, ) => syncPayload => dispatch => {
+const createAsyncAction = (type, asyncFn) => syncPayload => dispatch => {
   dispatch({
     type, 
-    payload: syncPayload
+    payload: syncPayload,
+    meta: {
+      asyncPhase: 'START'
+    }
   })
   asyncFn(syncPayload).then(
     (data)=> {
-      dispatch({type: `${type}_SUCCESS`, payload: data})
+      dispatch({
+        type: `${type}_SUCCESS`, 
+        payload: data,
+        meta: {
+          asyncPhase: 'SUCCESS'
+        }  
+      })
     },
     (e)=> {
-      dispatch({type: `${type}_FAILED`, payload: e, error: true})
+      dispatch({
+        type: `${type}_FAILED`, 
+        payload: e,
+        meta: {
+          asyncPhase: 'FAILED'
+        }, 
+        error: true
+      })
     }
   )
 }
