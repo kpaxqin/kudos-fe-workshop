@@ -1,5 +1,6 @@
 import * as types from '../constants/ActionTypes'
 import api from '../api';
+import {commonErrorHandler} from '../errorHandle'
 
 const identity = i=> i;
 
@@ -38,7 +39,12 @@ export const addTodo = createAsyncAction(
   types.ADD_TODO, 
   (text)=> Promise.all([api.addTodo(text), api.addTodo(text)])
     .then(data=> data, e => {
-      throw new Error('Custom msg!')
+      if (e.message.indexOf('401') !== -1) {
+        window.alert('401');
+      } else {
+        commonErrorHandler(e);
+      }
+      throw e;
     }),
   defaultMeta => ({...defaultMeta, omitError: true})
 );
